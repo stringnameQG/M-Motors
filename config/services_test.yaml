@@ -1,0 +1,4 @@
+services:
+    test.user_service:
+        alias: App\Service\UserService
+        public: true
