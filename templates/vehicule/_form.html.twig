@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+    {% if app.request.attributes.get('_route') == 'app_vehicule_edit' %}
+    {% endif %}   
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

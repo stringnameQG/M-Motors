@@ -15,7 +15,6 @@ class UserServiceIntegrationTest extends KernelTestCase
         self::bootKernel();
 
         $this->userService = self::getContainer()->get('test.user_service');
-
     }
 
     public function testRegisterPersistsUserInDatabase(): void

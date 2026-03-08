@@ -25,11 +25,10 @@ class UserTest extends TestCase
     $user->setPassword($hashedPassword);
     $user->setRoles(['ROLE_ADMIN']);
 
-    // On simule la persistance
     $this->userRepository
-        ->expects($this->once())
-        ->method('save')
-        ->with($user);
+      ->expects($this->once())
+      ->method('save')
+      ->with($user);
 
     $this->userRepository->save($user);
 
@@ -46,9 +45,9 @@ class UserTest extends TestCase
     $user->setPassword($hashedPassword);
 
     $this->userRepository
-        ->expects($this->once())
-        ->method('save')
-        ->with($user);
+      ->expects($this->once())
+      ->method('save')
+      ->with($user);
 
     $this->userRepository->save($user);
 
@@ -61,9 +60,9 @@ class UserTest extends TestCase
     $user->setRoles(['ROLE_USER']);
 
     $this->userRepository
-        ->expects($this->once())
-        ->method('save')
-        ->with($user);
+      ->expects($this->once())
+      ->method('save')
+      ->with($user);
 
     $this->userRepository->save($user);
 
@@ -75,9 +74,9 @@ class UserTest extends TestCase
     $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
 
     $this->userRepository
-        ->expects($this->once())
-        ->method('save')
-        ->with($user);
+      ->expects($this->once())
+      ->method('save')
+      ->with($user);
 
     $this->userRepository->save($user);
 
@@ -85,7 +84,6 @@ class UserTest extends TestCase
 
     $this->assertNotContains('ROLE_ADMIN', $user->getRoles());
   }
-
   
   public function testCreateUserFailsWithInvalidEmail(): void {
     $user = new User();
@@ -95,10 +93,10 @@ class UserTest extends TestCase
     $this->expectExceptionMessage('Invalid email');
 
     $this->userRepository
-        ->expects($this->once())
-        ->method('save')
-        ->with($user)
-        ->willThrowException(new InvalidArgumentException('Invalid email'));
+      ->expects($this->once())
+      ->method('save')
+      ->with($user)
+      ->willThrowException(new InvalidArgumentException('Invalid email'));
 
     $this->userRepository->save($user);
   }

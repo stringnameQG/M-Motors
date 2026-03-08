@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicule{% endblock %}
+
+{% block body %}
+    <h1>Vehicule</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vehicule.id }}</td>
+            </tr>
+            <tr>
+                <th>CollectionPhotoLien</th>
+                <td>{{ vehicule.collectionPhotoLien ? vehicule.collectionPhotoLien|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ vehicule.type }}</td>
+            </tr>
+            <tr>
+                <th>Vin</th>
+                <td>{{ vehicule.vin }}</td>
+            </tr>
+            <tr>
+                <th>Immatriculation</th>
+                <td>{{ vehicule.immatriculation }}</td>
+            </tr>
+            <tr>
+                <th>Marque</th>
+                <td>{{ vehicule.marque }}</td>
+            </tr>
+            <tr>
+                <th>Modele</th>
+                <td>{{ vehicule.modele }}</td>
+            </tr>
+            <tr>
+                <th>Version</th>
+                <td>{{ vehicule.version }}</td>
+            </tr>
+            <tr>
+                <th>DateMiseEnCirculation</th>
+                <td>{{ vehicule.dateMiseEnCirculation ? vehicule.dateMiseEnCirculation|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Energie</th>
+                <td>{{ vehicule.energie }}</td>
+            </tr>
+            <tr>
+                <th>BoiteVitesse</th>
+                <td>{{ vehicule.boiteVitesse }}</td>
+            </tr>
+            <tr>
+                <th>PuissanceFiscale</th>
+                <td>{{ vehicule.puissanceFiscale }}</td>
+            </tr>
+            <tr>
+                <th>Kilometrage</th>
+                <td>{{ vehicule.kilometrage }}</td>
+            </tr>
+            <tr>
+                <th>Couleur</th>
+                <td>{{ vehicule.couleur }}</td>
+            </tr>
+            <tr>
+                <th>NombrePortes</th>
+                <td>{{ vehicule.nombrePortes }}</td>
+            </tr>
+            <tr>
+                <th>NombrePlaces</th>
+                <td>{{ vehicule.nombrePlaces }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vehicule_index') }}">back to list</a>
+
+    <a href="{{ path('app_vehicule_edit', {'id': vehicule.id}) }}">edit</a>
+
+    {{ include('vehicule/_delete_form.html.twig') }}
+{% endblock %}

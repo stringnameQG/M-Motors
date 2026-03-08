@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicule index{% endblock %}
+
+{% block body %}
+    <h1>Vehicule index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CollectionPhotoLien</th>
+                <th>Type</th>
+                <th>Vin</th>
+                <th>Immatriculation</th>
+                <th>Marque</th>
+                <th>Modele</th>
+                <th>Version</th>
+                <th>DateMiseEnCirculation</th>
+                <th>Energie</th>
+                <th>BoiteVitesse</th>
+                <th>PuissanceFiscale</th>
+                <th>Kilometrage</th>
+                <th>Couleur</th>
+                <th>NombrePortes</th>
+                <th>NombrePlaces</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicule in vehicules %}
+            <tr>
+                <td>{{ vehicule.id }}</td>
+                <td>{{ vehicule.collectionPhotoLien ? vehicule.collectionPhotoLien|json_encode : '' }}</td>
+                <td>{{ vehicule.type }}</td>
+                <td>{{ vehicule.vin }}</td>
+                <td>{{ vehicule.immatriculation }}</td>
+                <td>{{ vehicule.marque }}</td>
+                <td>{{ vehicule.modele }}</td>
+                <td>{{ vehicule.version }}</td>
+                <td>{{ vehicule.dateMiseEnCirculation ? vehicule.dateMiseEnCirculation|date('Y-m-d') : '' }}</td>
+                <td>{{ vehicule.energie }}</td>
+                <td>{{ vehicule.boiteVitesse }}</td>
+                <td>{{ vehicule.puissanceFiscale }}</td>
+                <td>{{ vehicule.kilometrage }}</td>
+                <td>{{ vehicule.couleur }}</td>
+                <td>{{ vehicule.nombrePortes }}</td>
+                <td>{{ vehicule.nombrePlaces }}</td>
+                <td>
+                    <a href="{{ path('app_vehicule_show', {'id': vehicule.id}) }}">show</a>
+                    <a href="{{ path('app_vehicule_edit', {'id': vehicule.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="17">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vehicule_new') }}">Create new</a>
+{% endblock %}

@@ -22,11 +22,11 @@ final class UserControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client    = static::createClient();
         $this->container = static::getContainer();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
+        $this->manager   = static::getContainer()->get('doctrine')->getManager();
         $this->userRepository = $this->manager->getRepository(User::class);
-        $this->entityManager = $this->container->get(EntityManagerInterface::class);
+        $this->entityManager  = $this->container->get(EntityManagerInterface::class);
         $this->passwordHasher = $this->container->get(UserPasswordHasherInterface::class);
 
         foreach ($this->userRepository->findAll() as $object) {
@@ -50,7 +50,6 @@ final class UserControllerTest extends WebTestCase
 
     public function testIndex(): void
     {
-
         $this->client->followRedirects();
         $this->client->request('GET', $this->path);
 

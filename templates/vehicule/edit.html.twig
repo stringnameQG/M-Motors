@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Vehicule{% endblock %}
+
+{% block body %}
+    <h1>Edit Vehicule</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger" id="good-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" id="wrong-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <div class="img_list">
+        {% for photo_place_in_array, photoUrl in vehicule.collectionPhotoLien %}
+        <div>
+            <img id="img-{{photo_place_in_array}}" class="img" src="{{photoUrl}}" decoding="async" width="50px" eight="50px">
+
+            {% include 'vehicule/_delete_photo_form.html.twig' %}
+        </div>
+        {% endfor %}
+    </div>
+
+    {{ include('vehicule/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_vehicule_index') }}">back to list</a>
+
+    {{ include('vehicule/_delete_form.html.twig') }}
+{% endblock %}

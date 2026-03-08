@@ -1,0 +1,8 @@
+<form method="post"
+      action="{{ path('app_vehicule_delete_photo', {'id': vehicule.id, 'index': photo_place_in_array}) }}"
+      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette photo ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete_photo' ~ vehicule.id) }}">
+    <button type="submit" class="btn btn-danger btn-sm">
+        Supprimer Photo {{photo_place_in_array + 1}}
+    </button>
+</form>

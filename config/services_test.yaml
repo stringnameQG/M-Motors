@@ -2,3 +2,10 @@ services:
     test.user_service:
         alias: App\Service\UserService
         public: true
+    App\Service\CloudinaryService:
+        public: true
+        arguments:
+            $cloudinaryCloudName: '%env(CLOUDINARY_CLOUD_NAME)%'
+            $cloudinaryApiKey: '%env(CLOUDINARY_API_KEY)%'
+            $cloudinaryApiSecret: '%env(CLOUDINARY_API_SECRET)%'
+            # $cloudinaryUrl: '%env(CLOUDINARY_URL)%'

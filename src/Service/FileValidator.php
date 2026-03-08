@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+class FileValidator
+{
+    public function validateImage(UploadedFile $file): bool
+    {
+        return in_array($this->getRealMimeType($file), ['image/jpeg', 'image/png', 'image/webp']);
+    }
+
+    private function getRealMimeType(UploadedFile $file): string
+    {
+        return (new \finfo(FILEINFO_MIME_TYPE))->file($file->getRealPath());
+    }
+}
