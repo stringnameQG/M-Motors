@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossier index{% endblock %}
+
+{% block body %}
+    <h1>Dossier index</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger" id="good-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" id="wrong-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Statut</th>
+                <th>Documents</th>
+                <th>Vehicule</th>
+                <th>User</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dossier in dossiers %}
+            <tr>
+                <td>{{ dossier.id }}</td>
+                <td>{{ dossier.type }}</td>
+                <td>{{ dossier.statut }}</td>
+                <td>{{ dossier.documents ? dossier.documents|json_encode : '' }}</td>
+                <td>{{ dossier.vehicule.id }}</td>
+                <td>{{ dossier.user.email }}</td>
+                <td>
+                    <a href="{{ path('app_dossier_show', {'id': dossier.id}) }}">show</a>
+                    <a href="{{ path('app_dossier_edit', {'id': dossier.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dossier_new') }}">Create new</a>
+{% endblock %}

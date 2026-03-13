@@ -1,0 +1,8 @@
+<form method="post"
+      action="{{ path('app_dossier_delete_document', {'id': dossier.id, 'index': document_place_in_array}) }}"
+      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete_document' ~ dossier.id) }}">
+    <button type="submit" class="btn btn-danger btn-sm">
+        Supprimer Document {{document_place_in_array + 1}}
+    </button>
+</form>

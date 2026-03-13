@@ -2,59 +2,41 @@
 
 namespace App\Service;
 
-use Cloudinary\Cloudinary;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 
 class CloudinaryService
 {
-  private $cloudinary;
+  private UploadApi $upload;
+  private string $baseFolder;
 
   public function __construct(
     string $cloudinaryCloudName,
     string $cloudinaryApiKey,
-    string $cloudinaryApiSecret
+    string $cloudinaryApiSecret,
+    ?UploadApi $uploadApi = null
   ) {
-    $cloudinaryUrl = sprintf(
-      'cloudinary://%s:%s@%s',
-      $cloudinaryApiKey,
-      $cloudinaryApiSecret,
-      $cloudinaryCloudName
-    );
-      $this->cloudinary = new Cloudinary($cloudinaryUrl);
-  }
-    
-  public function uploadImage(UploadedFile $file, ?string $publicId = null): string
-  {
-    $result = $this->cloudinary->uploadApi()->upload(
-      $file->getPathname(),
-      [
-        'public_id' => $publicId,
-        'folder' => 'vehicules/images'
-      ]
-    );
+    $config = Configuration::instance();
+    $config->cloud->cloudName = $cloudinaryCloudName;
+    $config->cloud->apiKey = $cloudinaryApiKey;
+    $config->cloud->apiSecret = $cloudinaryApiSecret;
+    $config->url->secure = true;
 
-    return $result['secure_url'];
+    $this->baseFolder = "M-Motors";
+    $this->upload = $uploadApi ?? new UploadApi();
   }
 
-  public function uploadPdf(UploadedFile $file, string $clientEmail, ?string $publicId = null): string
+  public function upload(string $path, string $subFolder = ""): string
   {
-    $pdfPublicId = $publicId ?? uniqid('pdf_') . '_' . str_replace(['@', '.'], '_', $clientEmail);
-    $result = $this->cloudinary->uploadApi()->upload($file->getRealPath(), [
-      'folder' => 'clients/pdfs',
-      'public_id' => $pdfPublicId,
-      'resource_type' => 'raw',
-      'overwrite' => true,
+    $result = $this->upload->upload($path, [
+      'folder' => $this->baseFolder . $subFolder
     ]);
+
     return $result['secure_url'];
   }
 
-  public function deleteImage(string $publicId): void
+  public function destroy(string $publicId): void
   {
-    $this->cloudinary->uploadApi()->destroy('vehicules/images/' . $publicId);
-  }
-
-  public function deletePdf(string $publicId): void
-  {
-    $this->cloudinary->uploadApi()->destroy('clients/pdfs/' . $publicId, ['resource_type' => 'raw']);
+    $this->upload->destroy($this->baseFolder . $publicId);
   }
 }

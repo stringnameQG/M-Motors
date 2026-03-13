@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Dossier{% endblock %}
+
+{% block body %}
+    <h1>Edit Dossier</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger" id="good-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" id="wrong-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <div class="img_list">
+        {% for document_place_in_array, documentUrl in dossier.documents %}
+        <div>
+            <img id="img-{{document_place_in_array}}" class="img" src="{{documentUrl}}" decoding="async" width="50px" eight="50px">
+
+            {% include 'dossier/_delete_document_form.html.twig' %}
+        </div>
+        {% endfor %}
+    </div>
+
+    {{ include('dossier/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_dossier_index') }}">back to list</a>
+
+    {{ include('dossier/_delete_form.html.twig') }}
+{% endblock %}

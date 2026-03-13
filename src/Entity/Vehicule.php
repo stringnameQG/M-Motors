@@ -75,7 +75,6 @@ class Vehicule
     public function setCollectionPhotoLien(?array $collectionPhotoLien): static
     {
         $this->collectionPhotoLien = $collectionPhotoLien;
-
         return $this;
     }
 

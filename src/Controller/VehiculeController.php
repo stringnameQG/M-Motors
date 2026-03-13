@@ -13,10 +13,16 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CloudinaryService;
 use App\Service\FileValidator;
 
-
 #[Route('/vehicule')]
 final class VehiculeController extends AbstractController
 {
+    private string $subFolder;
+
+    public function __construct()
+    {
+        $this->subFolder = "/vehicules/images";
+    }
+
     #[Route(name: 'app_vehicule_index', methods: ['GET'])]
     public function index(VehiculeRepository $vehiculeRepository): Response
     {
@@ -33,12 +39,21 @@ final class VehiculeController extends AbstractController
         CloudinaryService $cloudinary
     ): Response
     {
-        $vehicule = new Vehicule();
+
+    $vehicule = new Vehicule();
     $form = $this->createForm(VehiculeType::class, $vehicule);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
         $photosFiles = $form->get('photosFiles')->getData();
+
+        if (count($photosFiles) > 10 ) {
+            $this->addFlash('error', 'Limite de 10 photos atteinte.');
+            return $this->render('vehicule/new.html.twig', [
+                'vehicule' => $vehicule,
+                'form' => $form,
+            ]);
+        }
 
         if ($photosFiles) {
             foreach ($photosFiles as $file) {
@@ -49,20 +64,12 @@ final class VehiculeController extends AbstractController
                         'form' => $form,
                     ]);
                 }
-
-                if (count($vehicule->getCollectionPhotoLien()) >= 10 ) {
-                    $this->addFlash('error', 'Limite de 10 photos atteinte.');
-                    return $this->render('vehicule/new.html.twig', [
-                        'vehicule' => $vehicule,
-                        'form' => $form,
-                    ]);
-                }
-
-                $url = $cloudinary->uploadImage($file);
+            }
+            foreach ($photosFiles as $file) {
+                $url = $cloudinary->upload($file, $this->subFolder);
                 $vehicule->addCollectionPhotoLien($url);
             }
         }
-
         $entityManager->persist($vehicule);
         $entityManager->flush();
 
@@ -90,7 +97,7 @@ final class VehiculeController extends AbstractController
         EntityManagerInterface $entityManager,
         CloudinaryService $cloudinary, 
         FileValidator $fileValidator
-        ): Response
+    ): Response
     {
         $form = $this->createForm(VehiculeType::class, $vehicule);
         $form->handleRequest($request);
@@ -98,29 +105,29 @@ final class VehiculeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $photosFiles = $form->get('photosFiles')->getData();
 
-            if ($photosFiles) {
-            foreach ($photosFiles as $file) {
-                if (!$fileValidator->validateImage($file)) {
-                    $this->addFlash('error', 'Seuls les fichiers JPEG, PNG ou WebP sont autorisés.');
-                    return $this->render('vehicule/edit.html.twig', [
-                        'vehicule' => $vehicule,
-                        'form' => $form,
-                    ]);
-                }
-
-                if (count($vehicule->getCollectionPhotoLien()) >= 10) {
-                    $this->addFlash('error', 'Limite de 10 photos atteinte.');
-                    return $this->render('vehicule/edit.html.twig', [
-                        'vehicule' => $vehicule,
-                        'form' => $form,
-                    ]);
-                }
-
-                $url = $cloudinary->uploadImage($file);
-                $vehicule->addCollectionPhotoLien($url);
+            if ((count($vehicule->getCollectionPhotoLien()) + count($photosFiles)) > 10) {
+                $this->addFlash('error', 'Limite de 10 photos atteinte.');
+                return $this->render('vehicule/edit.html.twig', [
+                    'vehicule' => $vehicule,
+                    'form' => $form,
+                ]);
             }
-        }
-        
+
+            if ($photosFiles) {
+                foreach ($photosFiles as $file) {
+                    if (!$fileValidator->validateImage($file)) {
+                        $this->addFlash('error', 'Seuls les fichiers JPEG, PNG ou WebP sont autorisés.');
+                        return $this->render('vehicule/edit.html.twig', [
+                            'vehicule' => $vehicule,
+                            'form' => $form,
+                        ]);
+                    }
+                }
+                foreach ($photosFiles as $file) {
+                    $url = $cloudinary->upload($file, $this->subFolder);
+                    $vehicule->addCollectionPhotoLien($url);
+                }
+            }
             $entityManager->persist($vehicule);
             $entityManager->flush();
 
@@ -142,14 +149,13 @@ final class VehiculeController extends AbstractController
     ): Response
     {
         if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->getPayload()->getString('_token'))) {
-            foreach( $vehicule->getCollectionPhotoLien() as $photo) {
-                $cloudinary->deleteImage($photo);
+            foreach( $vehicule->getCollectionPhotoLien() as $photoUrl) {
+                $publicId = $this->recoverId($photoUrl);
+                $cloudinary->destroy($publicId);
             }
-
             $entityManager->remove($vehicule);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -175,7 +181,11 @@ final class VehiculeController extends AbstractController
         }
 
         $photoUrl = $photos[$index];
-        $cloudinary->deleteImage($photoUrl);
+
+        $publicId = $this->recoverId($photoUrl);
+
+        $cloudinary->destroy($publicId);
+
         $vehicule->removeCollectionPhotoLien($photoUrl);
 
         $entityManager->persist($vehicule);
@@ -183,5 +193,16 @@ final class VehiculeController extends AbstractController
 
         $this->addFlash('success', 'Photo supprimée avec succès.');
         return $this->redirectToRoute('app_vehicule_edit', ['id' => $vehicule->getId()]);
+    }
+
+    private function recoverId(string $photoUrl): string 
+    {
+        $folderIsolate = strstr($photoUrl, $this->subFolder);
+    
+        $ext = strstr($folderIsolate, ".");
+    
+        $publicId = str_replace($ext, "", $folderIsolate);
+
+        return $publicId;
     }
 }

@@ -10,6 +10,10 @@ class FileValidator
     {
         return in_array($this->getRealMimeType($file), ['image/jpeg', 'image/png', 'image/webp']);
     }
+    public function validateImagePDF(UploadedFile $file): bool
+    {
+        return in_array($this->getRealMimeType($file), ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
+    }
 
     private function getRealMimeType(UploadedFile $file): string
     {

@@ -44,13 +44,51 @@ class FileValidatorTest extends KernelTestCase
         
     $file = new UploadedFile (
       $filePath,
-      'test_image.jpg',
-      'image/jpeg',
+      'valid_document.pdf',
+      'application/pdf',
       null,
       true
     );
 
     $result = $this->fileValidator->validateImage($file);
+    $this->assertFalse($result);
+  }
+
+  public function testValidateImagePDFWithValidMimeType(): void
+  {
+    $filePath = __DIR__.'/../fixtures/files/valid_document.pdf';
+    if (!file_exists($filePath)) {
+      $this->markTestSkipped('Le fichier de test est introuvable.');
+    }
+
+    $file = new UploadedFile (
+      $filePath,
+      'valid_document.pdf',
+      'application/pdf',
+      null,
+      true
+    );
+
+    $result = $this->fileValidator->validateImagePDF($file);
+    $this->assertTrue($result);
+  }
+
+  public function testValidateImagePDFWithInvalidMimeType(): void
+  {
+    $filePath = __DIR__.'/../fixtures/files/test_json.json';
+    if (!file_exists($filePath)) {
+      $this->markTestSkipped('Le fichier de test est introuvable.');
+    }
+        
+    $file = new UploadedFile (
+      $filePath,
+      'test_json.json',
+      'application/json',
+      null,
+      true
+    );
+
+    $result = $this->fileValidator->validateImagePDF($file);
     $this->assertFalse($result);
   }
 }

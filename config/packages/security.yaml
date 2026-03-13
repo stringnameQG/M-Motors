@@ -36,6 +36,7 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
 
         # - { path: ^/vehicule, roles: ROLE_ADMIN }
+        # - { path: ^/dossier, roles: ROLE_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/user, roles: ROLE_ADMIN }
 

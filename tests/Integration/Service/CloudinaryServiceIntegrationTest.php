@@ -24,13 +24,13 @@ class CloudinaryServiceIntegrationTest extends KernelTestCase
     {
         foreach ($this->uploadedPublicIds as $publicId) {
             try {
-                $this->cloudinaryService->deleteImage($publicId);
+                $this->cloudinaryService->destroy($publicId);
             } catch (\Exception $e) { }
         }
         $this->uploadedPublicIds = [];
     }
 
-    public function testUploadImage(): void
+    public function testUpload(): void
     {
         $file = new UploadedFile(
             __DIR__.'/../../Unit/fixtures/files/test_image.jpg',
@@ -40,34 +40,14 @@ class CloudinaryServiceIntegrationTest extends KernelTestCase
             true
         );
 
-        $url = $this->cloudinaryService->uploadImage($file, 'test_image_integration');
+        $url = $this->cloudinaryService->upload($file, '/test_image_integration');
         $this->assertStringContainsString('cloudinary.com', $url);
-        $this->assertStringContainsString('vehicules/images/test_image_integration', $url);
+        $this->assertStringContainsString('M-Motors/test_image_integration', $url);
 
         $this->uploadedPublicIds[] = 'test_image_integration';
     }
 
-    public function testUploadPdf(): void
-    {
-        $file = new UploadedFile(
-            __DIR__.'/../../Unit/fixtures/files/valid_document.pdf',
-            'valid_document.pdf',
-            'application/pdf',
-            null,
-            true
-        );
-
-        $email = 'test.client@example.com';
-        $url = $this->cloudinaryService->uploadPdf($file, $email, 'test_pdf_integration');
-        $this->assertStringContainsString('cloudinary.com', $url);
-        $this->assertStringContainsString('clients/pdfs/test_pdf_integration', $url);
-        $url = $this->cloudinaryService->uploadPdf($file, $email);
-        $this->assertStringContainsString('test_client_example_com', $url);
-        
-        $this->uploadedPublicIds[] = 'test_pdf_integration';
-    }
-
-    public function testDeleteImage(): void
+    public function testDelete(): void
     {
         $file = new UploadedFile(
             __DIR__.'/../../Unit/fixtures/files/test_image.jpg',
@@ -78,29 +58,11 @@ class CloudinaryServiceIntegrationTest extends KernelTestCase
         );
 
         $publicId = 'test_delete_image';
-        $this->cloudinaryService->uploadImage($file, $publicId);
+        $this->cloudinaryService->upload($file, $publicId);
         $this->uploadedPublicIds[] = $publicId;
 
-        $this->cloudinaryService->deleteImage($publicId);
+        $this->cloudinaryService->destroy($publicId);
 
-    $this->assertTrue(true);
-  }
-
-  public function testDeletePdf(): void
-  {
-    $file = new UploadedFile(
-      __DIR__.'/../../Unit/fixtures/files/valid_document.pdf',
-      'valid_document.pdf',
-      'application/pdf',
-      null,
-      true
-    );
-
-    $publicId = 'test_delete_pdf';
-    $this->cloudinaryService->uploadPdf($file, 'test.client@example.com', $publicId);
-    $this->uploadedPublicIds[] = $publicId;
-
-    $this->cloudinaryService->deletePdf($publicId);
     $this->assertTrue(true);
   }
 }

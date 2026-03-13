@@ -251,8 +251,7 @@ final class VehiculeControllerTest extends WebTestCase
     self::assertPageTitleContains('Vehicule');
   }
 
-  public function testEdit(): void
-  { 
+  public function testEdit(): void { 
     foreach ($this->vehiculeRepository->findAll() as $object) {
       $this->manager->remove($object);
     }
@@ -277,7 +276,7 @@ final class VehiculeControllerTest extends WebTestCase
     $this->manager->persist($fixture);
     $this->manager->flush();
 
-    $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+    $this->client->request('GET', sprintf('%s%d/edit', $this->path, $fixture->getId()));
 
     $this->client->submitForm('Update', [
       'vehicule[type]'                  => 'location',
@@ -316,8 +315,7 @@ final class VehiculeControllerTest extends WebTestCase
     self::assertSame(40 , $fixture->getNombrePlaces());
   }
 
-  public function testEditWithValidImage(): void
-  { 
+  public function testEditWithValidImage(): void { 
     foreach ($this->vehiculeRepository->findAll() as $object) {
       $this->manager->remove($object);
     }
@@ -391,8 +389,7 @@ final class VehiculeControllerTest extends WebTestCase
     self::assertCount(3 , $fixture->getCollectionPhotoLien());
   }
 
-  public function testEditWithWithUnvalidImage(): void
-  { 
+  public function testEditWithWithUnvalidImage(): void { 
     foreach ($this->vehiculeRepository->findAll() as $object) {
       $this->manager->remove($object);
     }
@@ -450,8 +447,7 @@ final class VehiculeControllerTest extends WebTestCase
     $this->assertSelectorTextContains("#wrong-upload", 'Seuls les fichiers JPEG, PNG ou WebP sont autorisés.');
   }
 
-  public function testEditWithToManyImage(): void
-  { 
+  public function testEditWithToManyImage(): void { 
     foreach ($this->vehiculeRepository->findAll() as $object) {
       $this->manager->remove($object);
     }
@@ -509,8 +505,7 @@ final class VehiculeControllerTest extends WebTestCase
     $this->assertSelectorTextContains("#wrong-upload", 'Limite de 10 photos atteinte.');
   }
 
-  public function testRemove(): void
-  {
+  public function testRemove(): void {
     foreach ($this->vehiculeRepository->findAll() as $object) {
       $this->manager->remove($object);
     }
@@ -534,15 +529,46 @@ final class VehiculeControllerTest extends WebTestCase
     $this->manager->persist($fixture);
     $this->manager->flush();
 
-    $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+    $this->client->request('GET', sprintf('%s%d', $this->path, $fixture->getId()));
     $this->client->submitForm('Delete');
 
     self::assertResponseRedirects('/vehicule');
     self::assertSame(0, $this->vehiculeRepository->count([]));
   }
 
-  public function testRemovePhoto(): void
-  {
+  public function testRemoveWithPhoto(): void {
+    foreach ($this->vehiculeRepository->findAll() as $object) {
+      $this->manager->remove($object);
+    }
+
+    $fixture = new Vehicule();
+    $fixture->setType('vente');
+    $fixture->setVin('VF3AE9HZXFM789012');
+    $fixture->setImmatriculation('EF-789-GH');
+    $fixture->setMarque('Citroën');
+    $fixture->setModele('Berlingo');
+    $fixture->setVersion('Electric Ë-L4 100kW');
+    $fixture->setDateMiseEnCirculation(new \DateTime('2024-01-20'));
+    $fixture->setEnergie('Électrique');
+    $fixture->setBoiteVitesse('Automatique');
+    $fixture->setPuissanceFiscale(4);
+    $fixture->setKilometrage(8000);
+    $fixture->setCouleur('Blanc');
+    $fixture->setNombrePortes(5);
+    $fixture->setNombrePlaces(5);
+    $fixture->setCollectionPhotoLien(["test1", "test2"]);
+
+    $this->manager->persist($fixture);
+    $this->manager->flush();
+
+    $this->client->request('GET', sprintf('%s%d', $this->path, $fixture->getId()));
+    $this->client->submitForm('Delete');
+
+    self::assertResponseRedirects('/vehicule');
+    self::assertSame(0, $this->vehiculeRepository->count([]));
+  }
+
+  public function testRemovePhoto(): void {
     foreach ($this->vehiculeRepository->findAll() as $object) {
       $this->manager->remove($object);
     }
@@ -577,13 +603,12 @@ final class VehiculeControllerTest extends WebTestCase
 
     $this->assertRouteSame('app_vehicule_delete_photo');
 
-    $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+    $this->client->request('GET', sprintf('%s%d/edit', $this->path, $fixture->getId()));
     
     $this->assertSelectorTextContains("#good-upload", 'Photo supprimée avec succès.');
   }
 
-  public function testRemovePhotoWrongCSRFToken(): void
-  {
+  public function testRemovePhotoWrongCSRFToken(): void {
     foreach ($this->vehiculeRepository->findAll() as $object) {
       $this->manager->remove($object);
     }
@@ -612,6 +637,7 @@ final class VehiculeControllerTest extends WebTestCase
 
     self::assertResponseRedirects('/vehicule');
   }
+// Test abandonné, impossible de manipuler la chemin vert un faux index d'image et d'avoir un csrf token valide
 /*
   public function testRemovePhotoWrongPhotoIndex(): void
   {
