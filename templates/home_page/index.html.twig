@@ -1,7 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/home-page.css') }}">
+{% endblock %}
 
 {% block body %}
-  <h1>Home Page<h1>
+<div class="hero">
+  <div class="hero-content">
+    <h1>Garage M-motors</h1>
+    <p>Votre partenaire automobile depuis 2010</p>
+    <a href="#services" class="btn">Découvrir nos services</a>
+  </div>
+</div>
+
+<div class="section" id="services">
+  <h2>Nos Services</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <h3>Vente de véhicules</h3> 
+      <p>Nous proposons une sélection rigoureuse de véhicules d'occasion, vérifiés et garantis. Que vous cherchiez une citadine, un SUV ou un véhicule utilitaire, nous avons ce qu'il vous faut.</p>
+    </div>
+    <div class="service-card">
+      <h3>Location de véhicules</h3>
+      <p>Besoin d'un véhicule pour une courte ou longue durée ? Nous proposons des solutions de location adaptées à vos besoins, avec des véhicules récents et bien entretenus.</p>
+    </div>
+    <div class="service-card">
+      <h3>Entretien et réparation</h3>
+      <p>Notre atelier est équipé pour effectuer tous types de réparations et d'entretiens. Des vidanges aux révisions complètes, nous prenons soin de votre véhicule.</p>
+    </div>
+    <div class="service-card">
+      <h3>Contrôle technique</h3>
+      <p>Nous réalisons les contrôles techniques obligatoires pour votre sécurité et votre conformité. Prenez rendez-vous en ligne ou par téléphone.</p>
+    </div>
+    <div class="service-card">
+      <h3>Carrosserie et peinture</h3>
+      <p>Notre équipe de carrossiers qualifiés répare les dommages et redonne à votre véhicule son aspect d'origine. Nous utilisons des peintures et des matériaux de haute qualité.</p>
+    </div>
+    <div class="service-card">
+      <h3>Diagnostic électronique</h3>
+      <p>Grâce à nos outils de diagnostic avancés, nous identifions rapidement les pannes électroniques et mécaniques pour des réparations précises et efficaces.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>À propos de Garage M-motors</h2>
+  <div class="about-section">
+    <div class="about-text">
+      <p>Fondé en 2010, Garage M-motors est un acteur reconnu dans le domaine automobile. Notre équipe de passionnés met son expertise à votre service pour vous offrir des véhicules de qualité et des prestations irréprochables.</p>
+      <p>Nous nous engageons à vous fournir un service transparent, honnête et professionnel. Que ce soit pour l'achat, la location ou l'entretien de votre véhicule, nous sommes là pour vous conseiller et vous accompagner.</p>
+      <p>Notre atelier est équipé des dernières technologies pour garantir des interventions rapides et efficaces. Nous travaillons avec des pièces de qualité et respectons les normes environnementales en vigueur.</p>
+    </div>
+    <div class="about-image">
+      <img decoding="async" src="{{ asset('img/Accueil-2.jpg') }}" alt="Atelier Garage QG">
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Témoignages clients</h2>
+  <div class="testimonials">
+    <div class="testimonial">
+      <p>"Excellent service ! J'ai acheté une voiture d'occasion chez Garage QG et je suis ravi. Le véhicule était en parfait état et l'équipe m'a très bien conseillé."</p>
+      <div class="testimonial-author">- Jean D.</div>
+    </div>
+    <div class="testimonial">
+      <p>"Je fais entretenir ma voiture chez Garage QG depuis des années. Toujours un travail soigné et des prix justes. Je recommande sans hésitation !"</p>
+      <div class="testimonial-author">- Marie L.</div>
+    </div>
+    <div class="testimonial">
+      <p>"Rapide et efficace ! Mon contrôle technique a été fait en un temps record et le personnel était très aimable. Merci pour votre professionnalisme."</p>
+      <div class="testimonial-author">- Pierre T.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section contact">
+  <h2>Contactez-nous</h2>
+  <span>Vous avez une question ou besoin d'un devis ? N'hésitez pas à nous contacter !</p>
+  <p><strong>Adresse :</strong> Garage M-motors 5 rue du vide Paris</p>
+  <p><strong>Téléphone :</strong> 07 45 39 98 20</p>
+  <a href="mailto:contact@M-motors.fr"><strong>Email :</strong> contact@M-motors.fr</a>
+</div>
 {% endblock %}  

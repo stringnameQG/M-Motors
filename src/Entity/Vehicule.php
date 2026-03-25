@@ -6,6 +6,8 @@ use App\Repository\VehiculeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: VehiculeRepository::class)]
 class Vehicule
@@ -61,6 +63,18 @@ class Vehicule
 
     #[ORM\Column]
     private ?int $nombrePlaces = null;
+    
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Assert\Positive(message: 'Le prix ne peut pas être vide ou inférieur à zéro')]
+    private ?string $prix = null;
+
+    #[ORM\OneToMany(mappedBy: 'vehicule', targetEntity: Dossier::class, orphanRemoval: true)]
+    private Collection $dossiers;
+
+    public function __construct()
+    {
+        $this->dossiers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -258,6 +272,42 @@ class Vehicule
     {
         $this->nombrePlaces = $nombrePlaces;
 
+        return $this;
+    }
+
+    public function getPrix(): ?string
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(string $prix): static
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+        
+    public function getDossiers(): Collection
+    {
+        return $this->dossiers;
+    }
+    
+    public function addDossier(Dossier $dossier): static
+    {
+        if (!$this->dossiers->contains($dossier)) {
+            $this->dossiers->add($dossier);
+            $dossier->setVehicule($this);
+        }
+        return $this;
+    }
+    
+    public function removeDossier(Dossier $dossier): static
+    {
+        if ($this->dossiers->removeElement($dossier)) {
+            if ($dossier->getVehicule() === $this) {
+                $dossier->setVehicule(null);
+            }
+        }
         return $this;
     }
 }

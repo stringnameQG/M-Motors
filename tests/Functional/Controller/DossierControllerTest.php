@@ -65,6 +65,7 @@ final class DossierControllerTest extends WebTestCase {
     $this->vehicule->setCouleur('Blanc');
     $this->vehicule->setNombrePortes(5);
     $this->vehicule->setNombrePlaces(5);
+    $this->vehicule->setPrix("5000");
 
     $this->entityManager->persist($this->vehicule);
     $this->manager->flush();
@@ -171,7 +172,7 @@ final class DossierControllerTest extends WebTestCase {
     $this->manager->persist($fixture);
     $this->manager->flush();
 
-    $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+    $this->client->request('GET', sprintf('%s%d', $this->path, $fixture->getId()));
 
     self::assertResponseStatusCodeSame(200);
     self::assertPageTitleContains('Dossier');

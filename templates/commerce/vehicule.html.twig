@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ vehicule.marque }} {{ vehicule.modele }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/commerce-vehicule.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('javascript/affichageImage.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ vehicule.marque }} {{ vehicule.modele }} ({{ vehicule.version }})</h1>
+
+        <div class="vehicule-gallery">
+            <div class="gallery-main">
+                {% if vehicule.collectionPhotoLien|length > 0 %}
+                    <img decoding="async" id="main-image" src="{{ vehicule.collectionPhotoLien[0] }}" alt="{{ vehicule.marque }} {{ vehicule.modele }}">
+                {% else %}
+                    <img decoding="async" id="main-image" src="https://via.placeholder.com/600x400?text=Pas+d%27image" alt="Pas d'image">
+                {% endif %}
+            </div>
+            <div class="gallery-thumbs">
+                {% for place, photo in vehicule.collectionPhotoLien %}
+                    <img decoding="async" id="vehicule-photo-{{ place + 1 }}" src="{{ photo }}" alt="{{ vehicule.marque }} {{ vehicule.modele }}" onclick="changeMainImage('{{ photo }}', this)">
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="vehicule-info">
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <td>{{ vehicule.type }}</td>
+                </tr>
+                <tr>
+                    <th>Immatriculation</th>
+                    <td>{{ vehicule.immatriculation }}</td>
+                </tr>
+                <tr>
+                    <th>VIN</th>
+                    <td>{{ vehicule.vin }}</td>
+                </tr>
+                <tr>
+                    <th>Énergie</th>
+                    <td>{{ vehicule.energie }}</td>
+                </tr>
+                <tr>
+                    <th>Boîte de vitesse</th>
+                    <td>{{ vehicule.boiteVitesse }}</td>
+                </tr>
+                <tr>
+                    <th>Puissance fiscale</th>
+                    <td>{{ vehicule.puissanceFiscale }} CV</td>
+                </tr>
+                <tr>
+                    <th>Kilométrage</th>
+                    <td>{{ vehicule.kilometrage }} km</td>
+                </tr>
+                <tr>
+                    <th>Couleur</th>
+                    <td>{{ vehicule.couleur }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre de portes</th>
+                    <td>{{ vehicule.nombrePortes }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre de places</th>
+                    <td>{{ vehicule.nombrePlaces }}</td>
+                </tr>
+                <tr>
+                    <th>Date de mise en circulation</th>
+                    <td>{{ vehicule.dateMiseEnCirculation|date('d/m/Y') }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="vehicule-actions">
+            <a href="{{ path('app_commerce_vehicule_dossier', {'id': vehicule.id}) }}" class="btn btn-primary">
+                Créer un dossier
+            </a>
+            <a href="{{ path(vehicule.type == 'vente' ? 'app_vente' : 'app_location') }}" class="btn btn-secondary">
+                Retour à la liste
+            </a>
+        </div>
+    </div>
+{% endblock %}

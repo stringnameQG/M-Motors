@@ -8,7 +8,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+
 
 class VehiculeType extends AbstractType
 {
@@ -41,11 +43,39 @@ class VehiculeType extends AbstractType
             ->add('dateMiseEnCirculation')
             ->add('energie')
             ->add('boiteVitesse')
-            ->add('puissanceFiscale')
+            ->add('puissanceFiscale', IntegerType::class, [
+                'label' => 'puissance fiscale',
+                'required' => true,
+                'attr' => [
+                    'min' => 1,
+                    'max' => 100,
+                ]
+            ])
             ->add('kilometrage')
             ->add('couleur')
-            ->add('nombrePortes')
-            ->add('nombrePlaces')
+            ->add('nombrePortes', IntegerType::class, [
+                'label' => 'nombre de portes',
+                'required' => true,
+                'attr' => [
+                    'min' => 1,
+                    'max' => 100,
+                ]
+            ])
+            ->add('nombrePlaces', IntegerType::class, [
+                'label' => 'nombre de place',
+                'required' => true,
+                'attr' => [
+                    'min' => 1,
+                    'max' => 100,
+                ]
+            ])
+            ->add('prix', MoneyType::class, [
+                'attr' => [
+                    'min' => '1',
+                    'placeholder' => 'required'
+                ],
+                'required' => true
+            ])
         ;
     }
 

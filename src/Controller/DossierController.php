@@ -12,22 +12,43 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CloudinaryService;
 use App\Service\FileValidator;
+use Doctrine\Common\Collections\Criteria;
 
 #[Route('/dossier')]
 final class DossierController extends AbstractController
 {
     private string $subFolder;
+    private int $dossierPerPage;
 
     public function __construct()
     {
         $this->subFolder = "/clients/documents";
+        $this->dossierPerPage = 1;
     }
 
-    #[Route(name: 'app_dossier_index', methods: ['GET'])]
-    public function index(DossierRepository $dossierRepository): Response
+    #[Route('/{page<\d+>?1}', name: 'app_dossier_index', methods: ['GET'])]
+    public function index(
+        DossierRepository $dossierRepository, 
+        int $page = 1
+    ): Response
     {
+        if($page < 1) $page = 1;
+        
+        $criteria = Criteria::create()
+            ->setFirstResult(($page - 1) * $this->dossierPerPage)
+            ->setMaxResults($this->dossierPerPage);
+
+        $dossiers = $dossierRepository->matching($criteria);
+
+        $totalDossier = count($dossierRepository->matching($criteria));
+
+        $totalPages = ceil($totalDossier / $this->dossierPerPage);
+
         return $this->render('dossier/index.html.twig', [
-            'dossiers' => $dossierRepository->findAll(),
+            'dossiers' => $dossiers,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
+            // 'dossiers' => $dossierRepository->findAll(),
         ]);
     }
 
@@ -47,9 +68,7 @@ final class DossierController extends AbstractController
             $documentsFiles = $form->get('documentFiles')->getData();
             $user = $this->getUser();
     
-            if (!$user) {
-                return $this->redirectToRoute('app_login');
-            }
+            if (!$user) return $this->redirectToRoute('app_login');
 
             if (count($documentsFiles) > 10 ) {
                 $this->addFlash('error', 'Limite de 10 documents atteinte.');

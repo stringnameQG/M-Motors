@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Garage - Dossier pour {{ vehicule.marque }} {{ vehicule.modele }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/commerce-vehicule-dossier.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-danger" id="good-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger" id="wrong-upload">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    <div class="container">
+        <h1>Créer un dossier pour {{ vehicule.marque }} {{ vehicule.modele }}</h1>
+
+        <div class="dossier-form">
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="btn-submit">Envoyer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

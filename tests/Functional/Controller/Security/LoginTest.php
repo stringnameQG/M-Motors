@@ -57,7 +57,7 @@ class LoginTest extends WebTestCase
     $this->assertResponseRedirects('/');
     $this->client->followRedirect();
 
-    $this->assertSelectorTextContains('title', 'M-motors Accueil');
+    $this->assertSelectorTextContains('title', 'M-motors');
   }
   
   public function testUserAlreadyLogin(): void {
@@ -91,7 +91,7 @@ class LoginTest extends WebTestCase
     $this->assertResponseRedirects('/');
     $this->client->followRedirect();
 
-    $this->assertSelectorTextContains('title', 'M-motors Accueil');
+    $this->assertSelectorTextContains('title', 'M-motors');
 
     $crawler = $this->client->request('GET', '/login');
     $this->client->followRedirect();

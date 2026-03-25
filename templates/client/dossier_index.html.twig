@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Mes Dossiers{% endblock %}
+
+{% block body %}
+    <h1>Mes Dossiers</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Statut</th>
+                <th>Documents</th>
+                <th>Vehicule</th>
+                <th>User</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dossier in dossiers %}
+            <tr>
+                <td>{{ dossier.id }}</td>
+                <td>{{ dossier.type }}</td>
+                <td>{{ dossier.statut }}</td>
+                <td>{{ dossier.documents ? dossier.documents|json_encode : '' }}</td>
+                <td>{{ dossier.vehicule.id }}</td>
+                <td>{{ dossier.user.email }}</td>
+                <td>
+                    <a href="{{ path('app_client_dossier', {'id': dossier.id}) }}">détail</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

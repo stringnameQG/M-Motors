@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ controller_name == 'vente' ? 'Vente' : 'Location' }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/commerce-index.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>{{ controller_name == 'vente' ? 'Véhicules à vendre' : 'Véhicules en location' }}</h1>
+
+    <div class="row">
+    {% for vehicule in vehicules %}
+        <a class="vehicule-link" href="{{ path('app_commerce_vehicule', {'id': vehicule.id}) }}">
+            <div class="vehicule-card">
+                {% if vehicule.collectionPhotoLien|length > 0 %}
+                    <img decoding="async" id="vehicule-photo-1" src="{{ vehicule.collectionPhotoLien[0] }}" alt="{{ vehicule.marque }} {{ vehicule.modele }}">
+                {% else %}
+                    <img decoding="async" src="https://via.placeholder.com/400x250?text=Pas+d%27image" alt="Pas d'image">
+                {% endif %}
+            <div class="vehicule-details">
+                <h3>{{ vehicule.marque }} {{ vehicule.modele }} ({{ vehicule.version }})</h3>
+                <p class="vehicule-price">
+                    {{ controller_name == 'vente' ? vehicule.prix ~ ' €' : vehicule.prix ~ ' €/mois' }}
+                </p>
+                <div class="vehicule-specs">
+                    <span class="spec-item" id="vehicule-energie">{{ vehicule.energie }}</span>
+                    <span class="spec-item" id="vehicule-boiteVitesse">{{ vehicule.boiteVitesse }}</span>
+                    <span class="spec-item" id="vehicule-kilometrage">{{ vehicule.kilometrage }} km</span>
+                    <span class="spec-item" id="vehicule-dateMiseEnCirculation">{{ vehicule.dateMiseEnCirculation|date('Y') }}</span>
+                </div>
+            </div>
+            </div>
+        </a>
+    {% else %}
+        <p>Aucun véhicule disponible.</p>
+    {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% for page in 1..totalPages %}
+            <a href="{{ path(controller_name == 'vente' ? 'app_vente' : 'app_location', {'page': page}) }}" class="{{ page == currentPage ? 'active' : '' }}">
+                {{ page }}
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

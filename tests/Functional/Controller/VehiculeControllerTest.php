@@ -87,6 +87,7 @@ final class VehiculeControllerTest extends WebTestCase
       'vehicule[couleur]' => 'Noir',
       'vehicule[nombrePortes]' => 5,
       'vehicule[nombrePlaces]' => 5,
+      'vehicule[prix]'         => "5000",
       'vehicule[photosFiles]' => [
         new UploadedFile(
           __DIR__.'/../../Unit/fixtures/files/test_image.jpg',
@@ -128,6 +129,7 @@ final class VehiculeControllerTest extends WebTestCase
       'vehicule[couleur]' => 'Noir',
       'vehicule[nombrePortes]' => 5,
       'vehicule[nombrePlaces]' => 5,
+      'vehicule[prix]'         => "5000",
       'vehicule[photosFiles]' => [
         new UploadedFile(
           __DIR__.'/../../Unit/fixtures/files/valid_document.pdf',
@@ -165,7 +167,8 @@ final class VehiculeControllerTest extends WebTestCase
       'vehicule[kilometrage]' => 50000,
       'vehicule[couleur]' => 'Noir',
       'vehicule[nombrePortes]' => 5,
-      'vehicule[nombrePlaces]' => 5
+      'vehicule[nombrePlaces]' => 5,
+      'vehicule[prix]'                  => "5000"
     ]);
 
     $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -241,6 +244,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Bleu Métallisé');
     $fixture->setNombrePortes(5);
     $fixture->setNombrePlaces(5);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();
@@ -272,6 +276,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Jaune');
     $fixture->setNombrePortes(3);
     $fixture->setNombrePlaces(4);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();
@@ -293,6 +298,7 @@ final class VehiculeControllerTest extends WebTestCase
       'vehicule[couleur]'               => 'Bleu',
       'vehicule[nombrePortes]'          => 30,
       'vehicule[nombrePlaces]'          => 40,
+      'vehicule[prix]'                  => "5000"
     ]);
     
     self::assertResponseRedirects('/vehicule');
@@ -313,6 +319,7 @@ final class VehiculeControllerTest extends WebTestCase
     self::assertSame('Bleu' , $fixture->getCouleur());
     self::assertSame(30 , $fixture->getNombrePortes());
     self::assertSame(40 , $fixture->getNombrePlaces());
+    self::assertSame("5000.00" , $fixture->getPrix());
   }
 
   public function testEditWithValidImage(): void { 
@@ -336,6 +343,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Jaune');
     $fixture->setNombrePortes(3);
     $fixture->setNombrePlaces(4);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();
@@ -357,6 +365,7 @@ final class VehiculeControllerTest extends WebTestCase
       'vehicule[couleur]'               => 'Bleu',
       'vehicule[nombrePortes]'          => 30,
       'vehicule[nombrePlaces]'          => 40,
+      'vehicule[prix]'                  => "5000",
       'vehicule[photosFiles]' => [
         new UploadedFile(
           __DIR__.'/../../Unit/fixtures/files/test_image.jpg',
@@ -386,6 +395,7 @@ final class VehiculeControllerTest extends WebTestCase
     self::assertSame('Bleu' , $fixture->getCouleur());
     self::assertSame(30 , $fixture->getNombrePortes());
     self::assertSame(40 , $fixture->getNombrePlaces());
+    self::assertSame("5000.00" , $fixture->getPrix());
     self::assertCount(3 , $fixture->getCollectionPhotoLien());
   }
 
@@ -410,6 +420,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Jaune');
     $fixture->setNombrePortes(3);
     $fixture->setNombrePlaces(4);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();
@@ -431,6 +442,7 @@ final class VehiculeControllerTest extends WebTestCase
       'vehicule[couleur]'               => 'Bleu',
       'vehicule[nombrePortes]'          => 30,
       'vehicule[nombrePlaces]'          => 40,
+      'vehicule[prix]'                  => "5000",
       'vehicule[photosFiles]' => [
         new UploadedFile(
           __DIR__.'/../../Unit/fixtures/files/valid_document.pdf',
@@ -468,6 +480,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Jaune');
     $fixture->setNombrePortes(3);
     $fixture->setNombrePlaces(4);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();
@@ -489,6 +502,7 @@ final class VehiculeControllerTest extends WebTestCase
       'vehicule[couleur]'               => 'Bleu',
       'vehicule[nombrePortes]'          => 30,
       'vehicule[nombrePlaces]'          => 40,
+      'vehicule[prix]'                  => "5000",
       'vehicule[photosFiles]' => [
         new UploadedFile(
           __DIR__.'/../../Unit/fixtures/files/test_image.jpg',
@@ -525,6 +539,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Blanc');
     $fixture->setNombrePortes(5);
     $fixture->setNombrePlaces(5);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();
@@ -556,6 +571,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Blanc');
     $fixture->setNombrePortes(5);
     $fixture->setNombrePlaces(5);
+    $fixture->setPrix("5000");
     $fixture->setCollectionPhotoLien(["test1", "test2"]);
 
     $this->manager->persist($fixture);
@@ -589,6 +605,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Blanc');
     $fixture->setNombrePortes(5);
     $fixture->setNombrePlaces(5);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();
@@ -629,6 +646,7 @@ final class VehiculeControllerTest extends WebTestCase
     $fixture->setCouleur('Blanc');
     $fixture->setNombrePortes(5);
     $fixture->setNombrePlaces(5);
+    $fixture->setPrix("5000");
 
     $this->manager->persist($fixture);
     $this->manager->flush();

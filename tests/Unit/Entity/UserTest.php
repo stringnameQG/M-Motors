@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Entity;
 
+use App\Entity\Dossier;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
@@ -99,5 +100,28 @@ class UserTest extends TestCase
       ->willThrowException(new InvalidArgumentException('Invalid email'));
 
     $this->userRepository->save($user);
+  }
+
+  public function testAddDossier(): void {
+
+    $user = new User();
+    $dossier = new Dossier();
+
+    $user->addDossier($dossier);
+    $this->assertCount(1, $user->getDossiers());
+    $this->assertSame($user, $dossier->getUser());
+  }
+
+  public function testRemoveDossier(): void {
+
+    $user = new User();
+    $dossier = new Dossier();
+
+    $user->addDossier($dossier);
+    $this->assertCount(1, $user->getDossiers());
+    $this->assertSame($user, $dossier->getUser());
+
+    $user->removeDossier($dossier);
+    $this->assertCount(0, $user->getDossiers());
   }
 }

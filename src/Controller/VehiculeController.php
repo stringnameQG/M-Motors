@@ -12,22 +12,42 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CloudinaryService;
 use App\Service\FileValidator;
+use Doctrine\Common\Collections\Criteria;
 
 #[Route('/vehicule')]
 final class VehiculeController extends AbstractController
 {
     private string $subFolder;
+    private int $vehiculePerPage;
 
     public function __construct()
     {
         $this->subFolder = "/vehicules/images";
+        $this->vehiculePerPage = 10;
     }
 
-    #[Route(name: 'app_vehicule_index', methods: ['GET'])]
-    public function index(VehiculeRepository $vehiculeRepository): Response
+    #[Route('/{page<\d+>?1}', name: 'app_vehicule_index', methods: ['GET'])]
+    public function index(
+        VehiculeRepository $vehiculeRepository, 
+        int $page = 1
+    ): Response
     {
+        if($page < 1) $page = 1;
+        
+        $criteria = Criteria::create()
+            ->setFirstResult(($page - 1) * $this->vehiculePerPage)
+            ->setMaxResults($this->vehiculePerPage);
+
+        $vehicules = $vehiculeRepository->matching($criteria);
+
+        $totalVehicule = count($vehiculeRepository->matching($criteria));
+
+        $totalPages = ceil($totalVehicule / $this->vehiculePerPage);
+
         return $this->render('vehicule/index.html.twig', [
-            'vehicules' => $vehiculeRepository->findAll(),
+            'vehicules' => $vehicules,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
         ]);
     }
 
@@ -128,6 +148,7 @@ final class VehiculeController extends AbstractController
                     $vehicule->addCollectionPhotoLien($url);
                 }
             }
+
             $entityManager->persist($vehicule);
             $entityManager->flush();
 
@@ -144,21 +165,15 @@ final class VehiculeController extends AbstractController
     public function delete(
         Request $request, 
         Vehicule $vehicule, 
-        EntityManagerInterface $entityManager,
-        CloudinaryService $cloudinary
+        EntityManagerInterface $entityManager
     ): Response
     {
         if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->getPayload()->getString('_token'))) {
-            foreach( $vehicule->getCollectionPhotoLien() as $photoUrl) {
-                $publicId = $this->recoverId($photoUrl);
-                $cloudinary->destroy($publicId);
-            }
             $entityManager->remove($vehicule);
             $entityManager->flush();
         }
         return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
     }
-
 
     #[Route('/{id}/delete-photo/{index}', name: 'app_vehicule_delete_photo', methods: ['POST'])]
     public function deletePhoto(

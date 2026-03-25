@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Conditions Générales d'Utilisation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/cgu.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="cgu-container">
+    <h1>Conditions Générales d'Utilisation</h1>
+
+    <h2>1. Acceptation des conditions</h2>
+    <p>En accédant à ce site web, vous acceptez sans réserve les présentes Conditions Générales d'Utilisation (CGU). Si vous n'acceptez pas ces conditions, nous vous prions de ne pas utiliser ce site.</p>
+
+    <h2>2. Description des services</h2>
+    <p>Le site Garage QG propose les services suivants :</p>
+    <ul>
+        <li>Présentation et vente de véhicules d'occasion.</li>
+        <li>Location de véhicules.</li>
+        <li>Prise de rendez-vous pour l'entretien et la réparation de véhicules.</li>
+    </ul>
+
+    <h2>3. Responsabilités</h2>
+    <p>Garage QG s'engage à fournir des informations exactes et mises à jour sur les véhicules proposés. Cependant, nous ne pouvons garantir l'absence d'erreurs ou d'omissions. Les informations sont fournies à titre indicatif.</p>
+
+    <h2>4. Propriété intellectuelle</h2>
+    <p>Tous les contenus présents sur ce site (textes, images, logos, etc.) sont la propriété de Garage QG ou de ses partenaires. Toute reproduction ou utilisation non autorisée est strictement interdite.</p>
+
+    <h2>5. Données personnelles</h2>
+    <p>Les données personnelles collectées via ce site sont traitées conformément à notre politique de confidentialité, en accord avec le RGPD.</p>
+
+    <h2>6. Modification des CGU</h2>
+    <p>Garage QG se réserve le droit de modifier ces CGU à tout moment. Les utilisateurs seront informés des changements via une notification sur le site.</p>
+
+    <h2>7. Loi applicable</h2>
+    <p>Les présentes CGU sont régies par le droit français. Tout litige sera soumis aux tribunaux compétents.</p>
+
+    <p style="text-align: center; margin-top: 40px; font-style: italic;">Dernière mise à jour : {{ 'now'|date('d/m/Y') }}</p>
+</div>
+{% endblock %}

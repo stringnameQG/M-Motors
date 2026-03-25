@@ -17,8 +17,14 @@ final class UserController extends AbstractController
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
+        $allUsers = $userRepository->findAll();
+        $filteredUsers = array_filter($allUsers, function($user) {
+            $roles = $user->getRoles();
+            return !in_array("ROLE_ADMIN", $roles);
+        });
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $filteredUsers,
         ]);
     }
 

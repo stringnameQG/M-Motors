@@ -44,6 +44,7 @@ class DossierRepositoryTest extends KernelTestCase
     $vehicule->setCouleur('Blanc');
     $vehicule->setNombrePortes(5);
     $vehicule->setNombrePlaces(5);
+    $vehicule->setPrix("5000");
 
     $this->entityManager->persist($user);
     $this->entityManager->persist($vehicule);

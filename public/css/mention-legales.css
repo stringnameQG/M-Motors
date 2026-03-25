@@ -1,0 +1,28 @@
+.mentions-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  color: #333;
+  line-height: 1.6;
+}
+.mentions-container h1 {
+  text-align: center;
+  color: #1e3c72;
+  margin-bottom: 30px;
+  align-self: center;
+  justify-self: center;
+}
+.mentions-container h2 {
+  color: #2980b9;
+  margin-top: 30px;
+}
+.mentions-container p {
+  margin-bottom: 10px;
+}
+.mise-a-jour {
+  text-align: center; 
+  margin-top: 40px; 
+  font-style: italic;
+}

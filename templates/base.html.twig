@@ -2,9 +2,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>M-motors {% block title %}{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta name="description" content="Page d'Accueil du garage M-motors.">
+        <link rel="icon" href="{{ asset('icon/car.svg') }}">
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/m-motors.css') }}">
         {% endblock %}
 
         {% block javascripts %}
@@ -12,6 +16,31 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <main>
+            <nav>
+                <a href="{{ path('app_vente') }}">Vente</a>
+                <a href="{{ path('app_location') }}">Location</a>
+                <a href="{{ path('app_home') }}">M-motors</a>
+                <a href="{{ path('app_register') }}">Enregistrement</a>
+                {% if is_granted('ROLE_USER') %} 
+                  <a href="{{ path('app_logout') }}">Déconnexion</a>
+                  <a href="{{ path('app_client_dossier_index') }}">Mes Dossier</a>
+                {% else %}
+                  <a href="{{ path('app_login') }}">Se connecter</a>
+                {% endif %} 
+                {% if is_granted('ROLE_ADMIN') %} 
+                    <a href="{{ path('app_vehicule_index') }}">Gestion-Vehicule</a>
+                    <a href="{{ path('app_dossier_index') }}">Gestion-Dossier</a>
+                    <a href="{{ path('app_user_index') }}">Gestion-Utilisateur</a>
+                {% endif %} 
+            </nav>
+        {% block body %}
+        {% endblock %}
+        </main>
+        <footer>
+            <p>&copy; {{ 'now'|date('Y') }} Garage M-motors. Tous droits réservés.</p>
+            <a href="{{ path('app_cgu_contoller') }}">CGU</a>
+            <a href="{{ path('app_mention_legales') }}">Mention Légales</a>
+        </footer>
     </body>
 </html>

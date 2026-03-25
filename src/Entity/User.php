@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -34,6 +36,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Assert\Length(min: 10, max: 255)]
     private ?string $password = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Dossier::class, orphanRemoval: true)]
+    private Collection $dossiers;
+
+    public function __construct()
+    {
+        $this->dossiers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,5 +124,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = array_filter($this->roles, fn($r) => $r !== $role);
         return $this;
     }
-
+        
+    public function getDossiers(): Collection
+    {
+        return $this->dossiers;
+    }
+    
+    public function addDossier(Dossier $dossier): static
+    {
+        if (!$this->dossiers->contains($dossier)) {
+            $this->dossiers->add($dossier);
+            $dossier->setUser($this);
+        }
+        return $this;
+    }
+    
+    public function removeDossier(Dossier $dossier): static
+    {
+        if ($this->dossiers->removeElement($dossier)) {
+            if ($dossier->getUser() === $this) {
+                $dossier->setUser(null);
+            }
+        }
+        return $this;
+    }
 }

@@ -1,6 +1,5 @@
 <?php
 
-// tests/Unit/Service/FileValidatorTest.php
 namespace App\Tests\Unit\Service;
 
 use App\Service\FileValidator;

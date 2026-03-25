@@ -34,6 +34,11 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/vente/, roles: PUBLIC_ACCESS }
+        - { path: ^/location/, roles: PUBLIC_ACCESS }
+        - { path: ^/commerce/vehicule/, roles: PUBLIC_ACCESS }
+        - { path: ^/commerce/vehicule/dossier/, roles: PUBLIC_ACCESS }
 
         # - { path: ^/vehicule, roles: ROLE_ADMIN }
         # - { path: ^/dossier, roles: ROLE_ADMIN }

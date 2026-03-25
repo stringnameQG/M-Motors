@@ -1,0 +1,21 @@
+.cgu-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  color: #333;
+  line-height: 1.6;
+}
+.cgu-container h1 {
+  text-align: center;
+  color: #1e3c72;
+  margin-bottom: 30px;
+}
+.cgu-container h2 {
+  color: #2980b9;
+  margin-top: 30px;
+}
+.cgu-container p {
+  margin-bottom: 15px;
+}

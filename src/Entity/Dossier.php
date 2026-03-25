@@ -22,11 +22,11 @@ class Dossier
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'dossiers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'dossiers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Vehicule $vehicule = null;
 

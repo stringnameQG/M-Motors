@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Entity;
 
+use App\Entity\Dossier;
 use App\Entity\Vehicule;
 use PHPUnit\Framework\TestCase;
 use LogicException;
@@ -25,6 +26,7 @@ class VehiculeTest extends TestCase
     $vehicule->setCouleur('Bleu Métallisé');
     $vehicule->setNombrePortes(5);
     $vehicule->setNombrePlaces(5);
+    $vehicule->setPrix("5000");
 
     $this->assertEquals(["photo1", "photo2"], $vehicule->getCollectionPhotoLien());
   }
@@ -46,6 +48,7 @@ class VehiculeTest extends TestCase
     $vehicule->setCouleur('Bleu Métallisé');
     $vehicule->setNombrePortes(5);
     $vehicule->setNombrePlaces(5);
+    $vehicule->setPrix("5000");
     
     $vehicule->addCollectionPhotoLien("photo3");
 
@@ -64,6 +67,7 @@ class VehiculeTest extends TestCase
     $this->assertEquals('Bleu Métallisé', $vehicule->getCouleur());
     $this->assertEquals(5, $vehicule->getNombrePortes());
     $this->assertEquals(5, $vehicule->getNombrePlaces());
+    $this->assertEquals("5000", $vehicule->getPrix());
   }
 
   public function testCreateVehiculAddPhotoToCollectionPhotoLienToMuch(): void {
@@ -83,6 +87,7 @@ class VehiculeTest extends TestCase
     $vehicule->setCouleur('Bleu Métallisé');
     $vehicule->setNombrePortes(5);
     $vehicule->setNombrePlaces(5);
+    $vehicule->setPrix("5000");
 
     try {
         $vehicule->addCollectionPhotoLien("photo11");
@@ -110,9 +115,33 @@ class VehiculeTest extends TestCase
     $vehicule->setCouleur('Bleu Métallisé');
     $vehicule->setNombrePortes(5);
     $vehicule->setNombrePlaces(5);
+    $vehicule->setPrix("5000");
     
     $vehicule->removeCollectionPhotoLien("photo2");
 
     $this->assertEquals(["photo1"], $vehicule->getCollectionPhotoLien());
+  }
+
+  public function testAddDossier(): void {
+
+    $vehicule = new Vehicule();
+    $dossier = new Dossier();
+
+    $vehicule->addDossier($dossier);
+    $this->assertCount(1, $vehicule->getDossiers());
+    $this->assertSame($vehicule, $dossier->getVehicule());
+  }
+
+  public function testRemoveDossier(): void {
+
+    $vehicule = new Vehicule();
+    $dossier = new Dossier();
+
+    $vehicule->addDossier($dossier);
+    $this->assertCount(1, $vehicule->getDossiers());
+    $this->assertSame($vehicule, $dossier->getVehicule());
+
+    $vehicule->removeDossier($dossier);
+    $this->assertCount(0, $vehicule->getDossiers());
   }
 }

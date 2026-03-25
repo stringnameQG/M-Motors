@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Mentions Legales{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/mention-legales.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="mentions-container">
+    <h1>Mentions Légales</h1>
+
+    <h2>1. Éditeur du site</h2>
+    <p><strong>Raison sociale :</strong> Garage QG</p>
+    <p><strong>Siège social :</strong> [Adresse complète de ton garage]</p>
+    <p><strong>Téléphone :</strong> [Numéro de téléphone]</p>
+    <p><strong>Email :</strong> contact@garageqg.fr</p>
+    <p><strong>Directeur de la publication :</strong> [Nom du responsable]</p>
+
+    <h2>2. Hébergement</h2>
+    <p><strong>Hébergeur :</strong> [Nom de l'hébergeur, ex: OVH, Heroku, etc.]</p>
+    <p><strong>Adresse :</strong> [Adresse de l'hébergeur]</p>
+
+    <h2>3. Propriété intellectuelle</h2>
+    <p>L'ensemble des contenus présents sur ce site (textes, images, logos, etc.) est protégé par les lois françaises et internationales sur la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est interdite.</p>
+
+    <h2>4. Données personnelles</h2>
+    <p>Les données personnelles collectées sur ce site sont traitées conformément à notre politique de confidentialité, disponible <a href="#">ici</a>.</p>
+
+    <h2>5. Cookies</h2>
+    <p>Ce site utilise des cookies pour améliorer l'expérience utilisateur. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur.</p>
+
+    <h2>6. Limitation de responsabilité</h2>
+    <p>Garage QG ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation de ce site.</p>
+
+    <p class="mise-a-jour">Dernière mise à jour : {{ 'now'|date('d/m/Y') }}</p>
+</div>
+{% endblock %}

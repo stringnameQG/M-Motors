@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossier{% endblock %}
+
+{% block body %}
+    <h1>Dossier</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Type</th>
+                <td>{{ dossier.type }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ dossier.statut }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ dossier.statut }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="img_list">
+        <h2>Documents</h2>
+        {% for document_place_in_array, documentUrl in dossier.documents %}
+        <div>
+            <img id="img-{{document_place_in_array}}" class="img" src="{{documentUrl}}" decoding="async">
+
+            {% include 'dossier/_delete_document_form.html.twig' %}
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

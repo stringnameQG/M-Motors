@@ -3,7 +3,6 @@
 namespace App\Tests\Service;
 
 use App\Service\CloudinaryService;
-use Cloudinary\Cloudinary;
 use Cloudinary\Api\ApiResponse;
 use Cloudinary\Api\Upload\UploadApi;
 use PHPUnit\Framework\TestCase;
@@ -13,13 +12,12 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 #[AllowMockObjectsWithoutExpectations]
 class CloudinaryServiceTest extends TestCase
 {
-  private $cloudinaryMock;
   private $uploadApiMock;
   private CloudinaryService $service;
   private $apiResponseMock;
 
   protected function setUp(): void
-{
+  {
     $this->uploadApiMock = $this->createMock(UploadApi::class);
     $this->apiResponseMock = $this->createStub(ApiResponse::class);
 
@@ -29,7 +27,7 @@ class CloudinaryServiceTest extends TestCase
         'XUy8QfE6MXiU_BKch0excfomIEQ',
         $this->uploadApiMock // Injection du mock
     );
-}
+  }
 
   public function testUpload(): void
   {
@@ -44,11 +42,11 @@ class CloudinaryServiceTest extends TestCase
     $this->apiResponseMock
     ->method('offsetGet')
     ->willReturnCallback(function ($key) {
-    $mockData = [
-        'secure_url' => 'https://mock.cloudinary.com/vehicules/images/test.jpg',
-    ];
-    return $mockData[$key] ?? null;
-  });
+      $mockData = [
+          'secure_url' => 'https://mock.cloudinary.com/vehicules/images/test.jpg',
+      ];
+      return $mockData[$key] ?? null;
+    });
 
     $this->uploadApiMock
         ->method('upload')
