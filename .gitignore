@@ -6,7 +6,7 @@
 /public/bundles/
 /var/
 /vendor/
-/tests/
+### /tests/
 /var/cache/test/
 /phpunit.xml.dist
 ###< symfony/framework-bundle ###
